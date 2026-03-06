@@ -1,8 +1,8 @@
 # Nutze ein stabiles Node-Image
-FROM node:22-slim
+FROM node:25
 
 # Installiere die Gemini CLI global
-RUN npm install -g @google/gemini-cli@0.31.0
+RUN npm install -g @google/gemini-cli@0.32.1
 
 # Arbeitsverzeichnis für deine Dokumente
 WORKDIR /apps
