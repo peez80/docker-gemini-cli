@@ -1,10 +1,21 @@
-# Nutze ein stabiles Node-Image
-FROM node:25
+# Nutze ein stabiles Ubuntu-Image
+FROM ubuntu:24.04
 
-ARG gemini_version
+# Installiere curl und ca-certificates
+RUN apt-get update && apt-get install -y curl ca-certificates && rm -rf /var/lib/apt/lists/*
 
-# Installiere die Gemini CLI global
-RUN npm install -g @google/gemini-cli@${gemini_version}
+ARG antigravity_version
+ARG TARGETARCH=amd64
+
+# Installiere die Antigravity CLI
+RUN if [ "$TARGETARCH" = "amd64" ]; then ARCH="x64"; else ARCH="$TARGETARCH"; fi && \
+    curl -fsSL "https://github.com/google-antigravity/antigravity-cli/releases/download/${antigravity_version}/agy_cli_linux_${ARCH}.tar.gz" -o agy.tar.gz && \
+    mkdir -p agy_tmp && \
+    tar -xzf agy.tar.gz -C agy_tmp && \
+    BINARY=$(find agy_tmp -type f -size +1M | head -n 1) && \
+    mv "$BINARY" /usr/local/bin/agy && \
+    chmod +x /usr/local/bin/agy && \
+    rm -rf agy_tmp agy.tar.gz
 
 # Arbeitsverzeichnis für deine Dokumente
 WORKDIR /apps

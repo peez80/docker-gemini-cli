@@ -15,11 +15,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set Gemini cli version
-      id: gemini_version
-      run: echo "::set-output name=gemini_version::0.35.3"
-    - name: Output docker image id with gemini version
-      run: echo "peez/gemini-cli:${{ steps.gemini_version.outputs.gemini_version }}"
+    - name: Set Antigravity cli version
+      id: antigravity_version
+      run: echo "::set-output name=antigravity_version::1.0.0"
+    - name: Output docker image id with antigravity version
+      run: echo "peez/antigravity-cli:${{ steps.antigravity_version.outputs.antigravity_version }}"
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
     - name: Set up Docker Buildx
@@ -35,5 +35,5 @@ jobs:
         platforms: linux/amd64,linux/arm64
         push: true
         build-args: |
-          gemini_version=${{ steps.gemini_version.outputs.gemini_version }}
-        tags: peez/gemini-cli:latest, peez/gemini-cli:${{ steps.gemini_version.outputs.gemini_version }}
+          antigravity_version=${{ steps.antigravity_version.outputs.antigravity_version }}
+        tags: peez/antigravity-cli:latest, peez/antigravity-cli:${{ steps.antigravity_version.outputs.antigravity_version }}
