@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="1.0.16"
+VERSION="1.1.5"
 
 echo "Building Docker image peez/antigravity-cli:${VERSION}..."
 

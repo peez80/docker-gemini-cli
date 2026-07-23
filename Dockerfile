@@ -1,8 +1,8 @@
 # Nutze ein stabiles Ubuntu-Image
 FROM ubuntu:24.04
 
-# Installiere curl und ca-certificates
-RUN apt-get update && apt-get install -y curl ca-certificates && rm -rf /var/lib/apt/lists/*
+# Installiere curl, ca-certificates und Docker-in-Docker Paket-Abhängigkeiten
+RUN apt-get update && apt-get install -y curl ca-certificates docker.io iptables iproute2 && rm -rf /var/lib/apt/lists/*
 
 ARG antigravity_version
 ARG TARGETARCH=amd64
