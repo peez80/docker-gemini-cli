@@ -4,8 +4,16 @@ FROM ubuntu:24.04
 # Installiere curl, ca-certificates und Docker-in-Docker Paket-Abhängigkeiten
 RUN apt-get update && apt-get install -y curl ca-certificates docker.io iptables iproute2 && rm -rf /var/lib/apt/lists/*
 
-ARG antigravity_version
+ARG antigravity_version=1.1.5
 ARG TARGETARCH=amd64
+
+# Installiere Docker Compose V2
+RUN if [ "$TARGETARCH" = "amd64" ]; then COMPOSE_ARCH="x86_64"; else COMPOSE_ARCH="aarch64"; fi && \
+    mkdir -p /usr/libexec/docker/cli-plugins /usr/local/lib/docker/cli-plugins && \
+    curl -fsSL "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-${COMPOSE_ARCH}" -o /usr/libexec/docker/cli-plugins/docker-compose && \
+    chmod +x /usr/libexec/docker/cli-plugins/docker-compose && \
+    ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose && \
+    ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
 
 # Installiere die Antigravity CLI
 RUN if [ "$TARGETARCH" = "amd64" ]; then ARCH="x64"; else ARCH="$TARGETARCH"; fi && \

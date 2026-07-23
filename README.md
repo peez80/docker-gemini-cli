@@ -23,9 +23,10 @@ To run the Antigravity CLI locally using the Docker image, you can use `agy.sh` 
 ./agy.sh --help
 ```
 
-**Note on Volumes & Docker-in-Docker:**
+**Note on Volumes, Docker-in-Docker & Docker Compose:**
 - The script automatically mounts your local configuration directory (`~/.gemini/antigravity-cli`) into the container at `/root/.gemini/antigravity-cli` so your settings and login states persist.
 - The container runs in `--privileged` mode with an internal Docker daemon (`dockerd`), enabling true **Docker-in-Docker (DinD)** support for container builds, volume mounts, and port forwardings within the environment.
+- **Docker Compose** V2 plugin is pre-installed and available via both `docker compose` and `docker-compose`.
 
 ---
 
