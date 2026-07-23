@@ -15,6 +15,11 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then COMPOSE_ARCH="x86_64"; else COMPOSE_ARC
     ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose && \
     ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
 
+
+# Configure Docker daemon to use vfs storage driver for Docker-in-Docker support
+RUN mkdir -p /etc/docker && \
+    echo '{\n  "storage-driver": "vfs"\n}' > /etc/docker/daemon.json
+
 # Installiere die Antigravity CLI
 RUN if [ "$TARGETARCH" = "amd64" ]; then ARCH="x64"; else ARCH="$TARGETARCH"; fi && \
     curl -fsSL "https://github.com/google-antigravity/antigravity-cli/releases/download/${antigravity_version}/agy_cli_linux_${ARCH}.tar.gz" -o agy.tar.gz && \
