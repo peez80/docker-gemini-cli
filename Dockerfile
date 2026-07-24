@@ -2,7 +2,7 @@
 FROM ubuntu:24.04
 
 # Installiere curl, ca-certificates und Docker-in-Docker Paket-Abhängigkeiten
-RUN apt-get update && apt-get install -y curl ca-certificates docker.io iptables iproute2 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y curl ca-certificates docker.io iptables iproute2 python3 python-is-python3 && rm -rf /var/lib/apt/lists/*
 
 ARG antigravity_version=1.1.5
 ARG TARGETARCH=amd64
