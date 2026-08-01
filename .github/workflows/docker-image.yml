@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Set Antigravity cli version
       id: antigravity_version
-      run: echo "::set-output name=antigravity_version::1.1.9"
+      run: echo "antigravity_version=1.1.9" >> $GITHUB_OUTPUT
     - name: Output docker image id with antigravity version
       run: echo "peez/antigravity-cli:${{ steps.antigravity_version.outputs.antigravity_version }}"
     - name: Set up QEMU
@@ -37,3 +37,9 @@ jobs:
         build-args: |
           antigravity_version=${{ steps.antigravity_version.outputs.antigravity_version }}
         tags: peez/antigravity-cli:latest, peez/antigravity-cli:${{ steps.antigravity_version.outputs.antigravity_version }}
+    - name: Output Docker Tags to Job Summary
+      run: |
+        echo "### 🐳 Built and Pushed Docker Tags" >> $GITHUB_STEP_SUMMARY
+        echo "- \`p&#8203;eez/antigravity-cli:latest\`" >> $GITHUB_STEP_SUMMARY
+        echo "- \`p&#8203;eez/antigravity-cli:${{ steps.antigravity_version.outputs.antigravity_version }}\`" >> $GITHUB_STEP_SUMMARY
+
