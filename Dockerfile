@@ -1,3 +1,4 @@
+ARG TARGETARCH=amd64
 # Nutze ein stabiles Ubuntu-Image
 FROM ubuntu:24.04
 
@@ -5,7 +6,7 @@ FROM ubuntu:24.04
 RUN apt-get update && apt-get install -y curl ca-certificates docker.io iptables iproute2 python3 python-is-python3 pip && rm -rf /var/lib/apt/lists/*
 
 ARG antigravity_version=1.1.5
-ARG TARGETARCH=amd64
+ARG TARGETARCH
 
 # Installiere Docker Compose V2
 RUN if [ "$TARGETARCH" = "amd64" ]; then COMPOSE_ARCH="x86_64"; else COMPOSE_ARCH="aarch64"; fi && \
