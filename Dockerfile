@@ -1,4 +1,3 @@
-ARG TARGETARCH=amd64
 # Nutze ein stabiles Ubuntu-Image
 FROM ubuntu:24.04
 
@@ -6,10 +5,10 @@ FROM ubuntu:24.04
 RUN apt-get update && apt-get install -y curl ca-certificates docker.io iptables iproute2 python3 python-is-python3 pip && rm -rf /var/lib/apt/lists/*
 
 ARG antigravity_version=1.1.5
-ARG TARGETARCH
 
 # Installiere Docker Compose V2
-RUN if [ "$TARGETARCH" = "amd64" ]; then COMPOSE_ARCH="x86_64"; else COMPOSE_ARCH="aarch64"; fi && \
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then COMPOSE_ARCH="x86_64"; else COMPOSE_ARCH="aarch64"; fi && \
     mkdir -p /usr/libexec/docker/cli-plugins /usr/local/lib/docker/cli-plugins && \
     curl -fsSL "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-${COMPOSE_ARCH}" -o /usr/libexec/docker/cli-plugins/docker-compose && \
     chmod +x /usr/libexec/docker/cli-plugins/docker-compose && \
@@ -22,8 +21,9 @@ RUN mkdir -p /etc/docker && \
     echo '{\n  "storage-driver": "vfs"\n}' > /etc/docker/daemon.json
 
 # Installiere die Antigravity CLI
-RUN if [ "$TARGETARCH" = "amd64" ]; then ARCH="x64"; else ARCH="$TARGETARCH"; fi && \
-    curl -fsSL "https://github.com/google-antigravity/antigravity-cli/releases/download/${antigravity_version}/agy_cli_linux_${ARCH}.tar.gz" -o agy.tar.gz && \
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then AGY_ARCH="x64"; else AGY_ARCH="arm64"; fi && \
+    curl -fsSL "https://github.com/google-antigravity/antigravity-cli/releases/download/${antigravity_version}/agy_cli_linux_${AGY_ARCH}.tar.gz" -o agy.tar.gz && \
     mkdir -p agy_tmp && \
     tar -xzf agy.tar.gz -C agy_tmp && \
     BINARY=$(find agy_tmp -type f -size +1M | head -n 1) && \
