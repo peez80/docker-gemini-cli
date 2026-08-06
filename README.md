@@ -12,15 +12,34 @@ Running the CLI within a Docker container ensures an isolated, reproducible envi
 ## Usage
 
 ### Running Locally
-To run the Antigravity CLI locally using the Docker image, you can use `agy.sh` (or `start_local.sh`):
+
+#### Global Setup (Recommended)
+To run the CLI easily from any project directory, create an executable script named `agy` in a directory that is included in your system's `$PATH` (for example `~/.local/bin/agy` or `/usr/local/bin/agy`):
+
+```bash
+cat << 'EOF' > ~/.local/bin/agy
+#!/bin/bash
+docker run -it \
+    -v ${HOME}/.gemini/antigravity-cli:/root/.gemini/antigravity-cli \
+    -v $(pwd):/apps \
+    --privileged \
+    peez/antigravity-cli:latest "$@"
+EOF
+
+chmod +x ~/.local/bin/agy
+```
+
+With this setup, the current working directory will be mounted as `/apps` inside the Docker container, allowing you to start developing immediately from any folder on your machine:
+
+```bash
+agy
+```
+
+#### Running via repository script
+Alternatively, you can run the CLI locally within this repository using `./agy.sh`:
 
 ```bash
 ./agy.sh <command>
-```
-
-**Example:**
-```bash
-./agy.sh --help
 ```
 
 **Note on Volumes, Docker-in-Docker & Docker Compose:**

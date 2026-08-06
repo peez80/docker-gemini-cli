@@ -1,6 +1,6 @@
 #!/bin/bash
-docker run -it \
+docker run -it --privileged \
     -v ${HOME}/.gemini/antigravity-cli:/root/.gemini/antigravity-cli \
-    -v $(pwd):/apps \
+    -v ${HOME}/testfiles:/apps/testfiles \
     --privileged \
     peez/antigravity-cli:latest "$@"
