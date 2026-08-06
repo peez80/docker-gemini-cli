@@ -4,4 +4,5 @@ docker run -it \
     -v $(pwd):/apps \
     -v antigravity-cli-dind-data:/var/lib/docker \
     --privileged \
+    --rm \
     peez/antigravity-cli:latest "$@"
